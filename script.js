@@ -1,6 +1,8 @@
 var hourSlotArr = [];
 
-var currentTime = dayjs().hour(13);
+var currentTime = dayjs();
+// Test different hours
+// currentTime = currentTime.hour(12);
 var currentHour = parseInt(currentTime.format("H"));
 
 function timeDisplayFrom24(time24) {
@@ -19,8 +21,11 @@ function saveEvent() {
 	localStorage.setItem(hour, eventDetails);
 }
 
+function updateHeader() {
+	$("#currentDay").text(currentTime.format("MMM D, YYYY h:mm A"));
+}
+
 $(function () {
-	// TODO: Add a listener for click events on the save button. This code should
 	for (let i = 9; i < 18; i++) {
 		let hourSlot = $('<div class="row time-block"></div>').attr(
 			"id",
@@ -48,12 +53,6 @@ $(function () {
 		hourSlotArr.push(hourSlot);
 		$("#hour-container").append(hourSlot);
 	}
-	// use the id in the containing time-block as a key to save the user input in
-	// local storage. HINT: What does `this` reference in the click listener
-	// function? How can DOM traversal be used to get the "hour-x" id of the
-	// time-block containing the button that was clicked? How might the id be
-	// useful when saving the description in local storage?
-	//
 
 	for (hourSlot of hourSlotArr) {
 		let hour = parseInt(hourSlot.attr("id").slice(5));
@@ -66,10 +65,7 @@ $(function () {
 			hourSlot.addClass("present");
 		}
 	}
-	//
-	// TODO: Add code to get any user input that was saved in localStorage and set
-	// the values of the corresponding textarea elements. HINT: How can the id
-	// attribute of each time-block be used to do this?
-	//
-	// TODO: Add code to display the current date in the header of the page.
+
+	updateHeader();
+	setInterval(updateHeader, 1000);
 });
