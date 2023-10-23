@@ -1,5 +1,10 @@
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
+var hourSlotArr = [];
+
+var currentTime = dayjs().hour(13);
+var currentHour = parseInt(currentTime.format("H"));
+
 function timeDisplayFrom24(time24) {
 	if (time24 > 12) {
 		return `${time24 % 12} PM`;
@@ -13,7 +18,7 @@ function timeDisplayFrom24(time24) {
 $(function () {
 	// TODO: Add a listener for click events on the save button. This code should
 	for (let i = 9; i < 18; i++) {
-		let hourSlot = $('<div class="row time-block past"></div>').attr(
+		let hourSlot = $('<div class="row time-block"></div>').attr(
 			"id",
 			`hour-${i}`
 		);
@@ -32,6 +37,7 @@ $(function () {
 				'<button class="btn saveBtn col-2 col-md-1" aria-label="save"><i class="fas fa-save" aria-hidden="true"></i></button>'
 			)
 		);
+		hourSlotArr.push(hourSlot);
 		$("#hour-container").append(hourSlot);
 	}
 	// use the id in the containing time-block as a key to save the user input in
@@ -45,6 +51,20 @@ $(function () {
 	// attribute of each time-block be used to conditionally add or remove the
 	// past, present, and future classes? How can Day.js be used to get the
 	// current hour in 24-hour time?
+
+	for (hourSlot of hourSlotArr) {
+		let hour = parseInt(hourSlot.attr("id").slice(5));
+		console.log(hour);
+		console.log(currentHour);
+
+		if (hour > currentHour) {
+			hourSlot.addClass("future");
+		} else if (hour < currentHour) {
+			hourSlot.addClass("past");
+		} else {
+			hourSlot.addClass("present");
+		}
+	}
 	//
 	// TODO: Add code to get any user input that was saved in localStorage and set
 	// the values of the corresponding textarea elements. HINT: How can the id
