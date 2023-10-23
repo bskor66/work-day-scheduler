@@ -1,5 +1,3 @@
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
 var hourSlotArr = [];
 
 var currentTime = dayjs().hour(13);
@@ -14,7 +12,13 @@ function timeDisplayFrom24(time24) {
 		return `${time24} AM`;
 	}
 }
-// in the html.
+
+function saveEvent() {
+	let eventDetails = $(this).siblings("textarea").first().val();
+	let hour = $(this).parent().first().attr("id");
+	localStorage.setItem(hour, eventDetails);
+}
+
 $(function () {
 	// TODO: Add a listener for click events on the save button. This code should
 	for (let i = 9; i < 18; i++) {
@@ -29,14 +33,18 @@ $(function () {
 				hourSlot.data.timeDisplay
 			)
 		);
-		hourSlot.append(
-			$('<textarea class="col-8 col-md-10 description" rows="3"> </textarea>')
+		textArea = $(
+			'<textarea class="col-8 col-md-10 description" rows="3"> </textarea>'
 		);
-		hourSlot.append(
-			$(
-				'<button class="btn saveBtn col-2 col-md-1" aria-label="save"><i class="fas fa-save" aria-hidden="true"></i></button>'
-			)
+		textArea.val(localStorage.getItem(hourSlot.attr("id")));
+		hourSlot.append(textArea);
+
+		saveButton = $(
+			'<button class="btn saveBtn col-2 col-md-1" aria-label="save"><i class="fas fa-save" aria-hidden="true"></i></button>'
 		);
+		hourSlot.append(saveButton);
+
+		saveButton.on("click", saveEvent);
 		hourSlotArr.push(hourSlot);
 		$("#hour-container").append(hourSlot);
 	}
@@ -46,16 +54,9 @@ $(function () {
 	// time-block containing the button that was clicked? How might the id be
 	// useful when saving the description in local storage?
 	//
-	// TODO: Add code to apply the past, present, or future class to each time
-	// block by comparing the id to the current hour. HINTS: How can the id
-	// attribute of each time-block be used to conditionally add or remove the
-	// past, present, and future classes? How can Day.js be used to get the
-	// current hour in 24-hour time?
 
 	for (hourSlot of hourSlotArr) {
 		let hour = parseInt(hourSlot.attr("id").slice(5));
-		console.log(hour);
-		console.log(currentHour);
 
 		if (hour > currentHour) {
 			hourSlot.addClass("future");
