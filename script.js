@@ -1,8 +1,39 @@
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
+function timeDisplayFrom24(time24) {
+	if (time24 > 12) {
+		return `${time24 % 12} PM`;
+	} else if (time24 === 12) {
+		return "12 PM";
+	} else {
+		return `${time24} AM`;
+	}
+}
 // in the html.
 $(function () {
 	// TODO: Add a listener for click events on the save button. This code should
+	for (let i = 9; i < 18; i++) {
+		let hourSlot = $('<div class="row time-block past"></div>').attr(
+			"id",
+			`hour-${i}`
+		);
+		hourSlot.data.timeDisplay = timeDisplayFrom24(i);
+
+		hourSlot.append(
+			$('<div class="col-2 col-md-1 hour text-center py-3"></div>').text(
+				hourSlot.data.timeDisplay
+			)
+		);
+		hourSlot.append(
+			$('<textarea class="col-8 col-md-10 description" rows="3"> </textarea>')
+		);
+		hourSlot.append(
+			$(
+				'<button class="btn saveBtn col-2 col-md-1" aria-label="save"><i class="fas fa-save" aria-hidden="true"></i></button>'
+			)
+		);
+		$("#hour-container").append(hourSlot);
+	}
 	// use the id in the containing time-block as a key to save the user input in
 	// local storage. HINT: What does `this` reference in the click listener
 	// function? How can DOM traversal be used to get the "hour-x" id of the
