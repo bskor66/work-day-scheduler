@@ -29,11 +29,11 @@ The Work Day Scheduler is a simple calendar application that allows a user to sa
 
 ### OR
 
-- Access at this [link]()
+- Access at this [link](https://bskor66.github.io/work-day-scheduler/)
 
 ## Screenshot
 
-![Screenshot](./assets/img/Screenshot_1.jpg)
+![Screenshot](./img/Screenshot_1.jpg)
 
 ## License
 
